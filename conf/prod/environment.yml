@@ -1,0 +1,5 @@
+source_path: "abfss://proddata@datalake.dfs.core.windows.net/raw/sales"
+bronze_table: "bronze.sales"
+silver_table: "silver.sales_clean"
+gold_table: "gold.sales_aggregates"
+null_threshold: 0.02

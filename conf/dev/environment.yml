@@ -1,0 +1,5 @@
+source_path: "dbfs:/mnt/raw/sales"
+bronze_table: "bronze.sales"
+silver_table: "silver.sales_clean"
+gold_table: "gold.sales_aggregates"
+null_threshold: 0.05
