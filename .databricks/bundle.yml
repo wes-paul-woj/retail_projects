@@ -1,0 +1,40 @@
+bundle:
+  name: databricks-dataops-bundle
+  version: 1.0.0
+  description: "Databricks Medallion CI/CD Template (Bronze → Silver → Gold)"
+
+workspace:
+  root_path: /Workspace/Repos/${workspace.user.email}/databricks-dataops-bundle
+  source_path: notebooks
+
+environments:
+  dev:
+    workspace:
+      host: https://<your-dev-workspace>.cloud.databricks.com
+    artifacts:
+      - type: notebook
+        path: notebooks/
+  prod:
+    workspace:
+      host: https://<your-prod-workspace>.cloud.databricks.com
+
+resources:
+  jobs:
+    bronze_ingest:
+      name: bronze_ingest
+      tasks:
+        - task_key: bronze
+          notebook_path: notebooks/bronze/bronze_ingest.py
+          existing_cluster_id: <cluster-id>
+    silver_transform:
+      name: silver_transform
+      tasks:
+        - task_key: silver
+          notebook_path: notebooks/silver/silver_transform.py
+          depends_on: [bronze_ingest]
+    gold_aggregate:
+      name: gold_aggregate
+      tasks:
+        - task_key: gold
+          notebook_path: notebooks/gold/gold_aggregate.py
+          depends_on: [silver_transform]
